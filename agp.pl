@@ -81,13 +81,29 @@ shrink_list([Head | Rest],Total, [Head | NewRest]):-
     NewTotal is Total - 1,
     shrink_list(Rest, NewTotal, NewRest). 
 
-changes([], 0, 0, 0).
-changes(List, N, Min, Shrinked):-
+for_loop(I, J, _, Min, Min):-
+    I > J, !.
+for_loop(I, J, List, Min, FinalMin):-
+    I =< J,
+    shrink_list(List, I, NewList),
+    convert(NewList, NNList),
+    bletter_count(NNList, B1),
+    B1 < Min,
+    NewI is I + 1,
+    for_loop(NewI, J, List, B1).
+for_loop(I, J, List, Min, FinalMin):-
+    I =< J,
+    shrink_list(List, I, NewList),
+    convert(NewList, NNList),
+    bletter_count(NNList, B1),
+    B1 >= Min,
+    NewI is I + 1,
+    for_loop(NewI, J, List, Min).
+
+changes([], 0).
+changes(List, N):-
     bletter_count(List, Count),
-    Count < Min,
-    Shrinked > 0,
-    NewShrinked is Shrinked - 1,
-    shrink_list(List, Shrinked, NewList),
-    changes(NewList, N, Count, NewShrinked).
+    list_length(List, Leng),
+    for_loop(1, Leng, List, Count, N).
 
 
