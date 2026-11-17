@@ -75,30 +75,33 @@ convert([First | Ls], [a | NewList]):-
     First == b,
     convert(Ls, NewList).
 
-shrink_list(_, 0, []).
-shrink_list([Head | Rest],Total, [Head | NewRest]):-
+shrink_list(X, 0, [], X).
+shrink_list([Head | Rest],Total, [Head | NewRest], RestList):-
     Total > 0,
     NewTotal is Total - 1,
-    shrink_list(Rest, NewTotal, NewRest). 
+    shrink_list(Rest, NewTotal, NewRest, RestList). 
+
 
 for_loop(I, J, _, Min, Min):-
     I > J, !.
 for_loop(I, J, List, Min, FinalMin):-
     I =< J,
-    shrink_list(List, I, NewList),
+    shrink_list(List, I, NewList, RestList),
     convert(NewList, NNList),
-    bletter_count(NNList, B1),
+    append(NNList, RestList, OurList),
+    bletter_count(OurList, B1),
     B1 < Min,
     NewI is I + 1,
-    for_loop(NewI, J, List, B1).
+    for_loop(NewI, J, List, B1, FinalMin).
 for_loop(I, J, List, Min, FinalMin):-
     I =< J,
-    shrink_list(List, I, NewList),
+    shrink_list(List, I, NewList, RestList),
     convert(NewList, NNList),
-    bletter_count(NNList, B1),
+    append(NNList, RestList, OurList),
+    bletter_count(OurList, B1),
     B1 >= Min,
     NewI is I + 1,
-    for_loop(NewI, J, List, Min).
+    for_loop(NewI, J, List, Min, FinalMin).
 
 changes([], 0).
 changes(List, N):-
