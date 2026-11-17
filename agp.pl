@@ -90,16 +90,18 @@ for_loop(I, J, List, Min, FinalMin):-
     convert(NewList, NNList),
     append(NNList, RestList, OurList),
     bletter_count(OurList, B1),
-    B1 < Min,
+    Total is B1 + 1,
+    Total < Min,
     NewI is I + 1,
-    for_loop(NewI, J, List, B1, FinalMin).
+    for_loop(NewI, J, List, Total, FinalMin).
 for_loop(I, J, List, Min, FinalMin):-
     I =< J,
     shrink_list(List, I, NewList, RestList),
     convert(NewList, NNList),
     append(NNList, RestList, OurList),
     bletter_count(OurList, B1),
-    B1 >= Min,
+    Total is B1 + 1,
+    Total >= Min,
     NewI is I + 1,
     for_loop(NewI, J, List, Min, FinalMin).
 
