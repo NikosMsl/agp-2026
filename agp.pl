@@ -112,3 +112,28 @@ changes(List, N):-
     for_loop(1, Leng, List, Count, N).
 
 
+/* Ασκηση 4 */
+
+/* Λιστα με ολα τα γραμματα */
+
+insertToList(Char, CurrChars, NewChars):-
+    checkIfExists(Char, CurrChars),
+    NewChars = CurrChars, !.
+insertToList(Char, CurrChars, [Char | CurrChars]).
+
+checkIfExists(Char, [Node | _]):-
+    Char == Node, !.
+checkIfExists(Char, [_ | RestList])
+
+    checkIfExists(Char, RestList).
+
+getCharacters().
+getCharacters([Word | RestWords]):-
+    checkIfExists
+
+
+
+
+
+
+
